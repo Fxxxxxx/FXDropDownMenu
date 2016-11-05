@@ -78,33 +78,34 @@
 }
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
-    self.backgroundColor = [UIColor clearColor];
-    self.layer.masksToBounds = YES;
-    _originHeight = frame.size.height;
-    _selectedColumn = 0;
-    //创建collecView
-    UICollectionViewFlowLayout * flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    flowLayout.minimumLineSpacing = 0;
-    flowLayout.minimumInteritemSpacing = 0;
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
-    self.collectionView.backgroundColor = [UIColor whiteColor];
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.backgroundColor = [UIColor whiteColor];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"CollectionViewCell"];
-    [self addSubview:self.collectionView];
-    //创建tableView
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.bounds.size.width, kScreenHeight)];
-    self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"TableViewCell"];
-    self.tableView.scrollEnabled = NO;
-    [self addSubview:self.tableView];
-    
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        self.layer.masksToBounds = YES;
+        _originHeight = frame.size.height;
+        _selectedColumn = 0;
+        //创建collecView
+        UICollectionViewFlowLayout * flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        flowLayout.minimumLineSpacing = 0;
+        flowLayout.minimumInteritemSpacing = 0;
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
+        self.collectionView.backgroundColor = [UIColor whiteColor];
+        self.collectionView.delegate = self;
+        self.collectionView.dataSource = self;
+        self.collectionView.showsHorizontalScrollIndicator = NO;
+        self.collectionView.backgroundColor = [UIColor whiteColor];
+        [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"CollectionViewCell"];
+        [self addSubview:self.collectionView];
+        //创建tableView
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.bounds.size.width, kScreenHeight)];
+        self.tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"TableViewCell"];
+        self.tableView.scrollEnabled = NO;
+        [self addSubview:self.tableView];
+    }
     return self;
 }
 

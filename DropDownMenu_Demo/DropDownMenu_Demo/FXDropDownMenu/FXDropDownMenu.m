@@ -41,7 +41,11 @@
     if (!_columnWidth) {
         NSInteger columnCounter = [self.dataSource theColumnTitlesArrayWithMenu:self].count;
         CGFloat menuWidth = self.bounds.size.width;
-        _columnWidth = menuWidth / columnCounter;
+        if (columnCounter > 5) {
+            _columnWidth = menuWidth / 5;
+        }else{
+             _columnWidth = menuWidth / columnCounter;
+        }
     }
     return _columnWidth;
 }
@@ -79,7 +83,7 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5];
         self.layer.masksToBounds = YES;
         _originHeight = frame.size.height;
         _selectedColumn = 0;
@@ -102,8 +106,9 @@
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"TableViewCell"];
-        self.tableView.scrollEnabled = NO;
+        //self.tableView.scrollEnabled = NO;
         [self addSubview:self.tableView];
     }
     return self;

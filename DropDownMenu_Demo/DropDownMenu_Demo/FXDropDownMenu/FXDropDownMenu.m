@@ -78,7 +78,7 @@
 }
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.4];
     //self.layer.masksToBounds = YES;
     _originHeight = frame.size.height;
     _selectedColumn = 0;

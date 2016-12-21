@@ -40,15 +40,12 @@
 
 @property (weak, nonatomic) id<FXDropDownMenuDataSource> dataSource;
 @property (weak, nonatomic) id<FXDropDownMenuDelegate> delegate;
-//第二级菜单(行)的高度
 @property (assign, nonatomic) CGFloat rowHeight;
-//第一级菜单(列)的宽度
 @property (assign, nonatomic) CGFloat columnWidth;
-//第二级菜单(行)的字体
 @property (strong, nonatomic) UIFont * rowTextFont;
-//第一级菜单(列)的字体
 @property (strong, nonatomic) UIFont * columnTextFont;
-//选中状态的颜色
 @property (strong, nonatomic) UIColor * selectedColor;
+
+- (void) reload;
 
 @end

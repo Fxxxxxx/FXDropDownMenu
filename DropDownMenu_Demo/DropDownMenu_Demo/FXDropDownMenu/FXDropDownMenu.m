@@ -5,6 +5,18 @@
 //  Created by Fxxx on 2016/11/5.
 //  Copyright © 2016年 Fxxx. All rights reserved.
 //
+#import <UIKit/UIKit.h>
+
+
+@interface ColumnCell : UICollectionViewCell
+
+@property (strong, nonatomic) UILabel * titleLabel;
+@property (strong, nonatomic) UIImageView * imageView;
+
+@end
+
+@implementation ColumnCell
+@end
 
 #import "FXDropDownMenu.h"
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
@@ -12,8 +24,10 @@
 
 
 @interface FXDropDownMenu()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>{
+    
     NSInteger _selectedColumn;
     CGFloat _originHeight;
+    Boolean _isDropDown;
     
 }
 
@@ -37,38 +51,85 @@
     }
     return _rowHeight;
 }
+
 - (CGFloat) columnWidth{
     if (!_columnWidth) {
-        NSInteger columnCounter = [self.dataSource theColumnTitlesArrayWithMenu:self].count;
-        CGFloat menuWidth = self.bounds.size.width;
-        _columnWidth = menuWidth / columnCounter;
+        _columnWidth = kScreenWidth / 5;
     }
     return _columnWidth;
 }
+
 - (UIFont *) columnTextFont{
     if (!_columnTextFont) {
         _columnTextFont = [UIFont systemFontOfSize:14];
     }
     return _columnTextFont;
 }
+
 - (UIFont *) rowTextFont{
     if (!_rowTextFont) {
         _rowTextFont = [UIFont systemFontOfSize:14];
     }
     return _rowTextFont;
 }
+
 - (UIColor *) selectedColor{
     if (!_selectedColor) {
-        _selectedColor = [UIColor blueColor];
+        _selectedColor = [UIColor colorWithRed:34.0/255 green:208.0/255 blue:177.0/255 alpha:1];
     }
     return _selectedColor;
 }
+
+- (UIColor *)unSelectedColor {
+    
+    if (!_unSelectedColor) {
+        _unSelectedColor = [UIColor grayColor];
+    }
+    return _unSelectedColor;
+    
+}
+
+- (UIImage *)selectUpImage {
+    
+    if (!_selectUpImage) {
+        _selectUpImage = [UIImage imageNamed:@"pic_up"];
+    }
+    return _selectUpImage;
+    
+}
+
+- (UIImage *)selectDownImage {
+    
+    if (!_selectDownImage) {
+        _selectDownImage = [UIImage imageNamed:@"pic_selected"];
+    }
+    return _selectDownImage;
+    
+}
+
+- (UIImage *)unSelectImage {
+    
+    if (!_unSelectImage) {
+        _unSelectImage = [UIImage imageNamed:@"pic_unselected"];
+    }
+    return _unSelectImage;
+    
+}
+
+
 - (NSMutableArray *)selectedRows{
     if (_selectedRows.count == 0) {
+        
         _selectedRows = [NSMutableArray array];
-        for (NSInteger i = 0; i < [self.dataSource theColumnTitlesArrayWithMenu:self].count; i++) {
-            [_selectedRows addObject:[NSNumber numberWithInteger:-1]];
+
+        if (!self.dataSource) {
+            return _selectedRows;
         }
+        
+        for (NSInteger i = 0; i < [self.dataSource theColumnTitlesArrayWithMenu:self].count; i++) {
+            [_selectedRows addObject:[NSNumber numberWithInteger:0]];
+        }
+        
     }
     return _selectedRows;
 }
@@ -87,14 +148,14 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.minimumLineSpacing = 0;
     flowLayout.minimumInteritemSpacing = 0;
+    flowLayout.itemSize = CGSizeMake(self.columnWidth, frame.size.height);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
-    self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"CollectionViewCell"];
+    [self.collectionView registerClass:[ColumnCell class] forCellWithReuseIdentifier:@"ColumnCell"];
     [self addSubview:self.collectionView];
     //创建tableView
     self.tableView = [[UITableView alloc] initWithFrame:[self tabelViewOriginFrame]];
@@ -103,6 +164,7 @@
     self.tableView.dataSource = self;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"TableViewCell"];
     //self.tableView.scrollEnabled = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self addSubview:self.tableView];
     
@@ -110,6 +172,8 @@
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     tap.delegate = self;
     [self addGestureRecognizer:tap];
+    
+    _isDropDown = false;
     
     return self;
 }
@@ -127,80 +191,107 @@
 - (CGRect) tabelViewOriginFrame{
     return CGRectMake(0, [self originFrame].size.height, self.bounds.size.width, 0);
 }
+
+- (void) changeDropStaue{
+    
+    if (_isDropDown) {
+        
+        [self.tableView reloadData];
+        self.frame = [self dropDowmFrame];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.tableView.frame = [self tabelViewFrame];
+        }];
+        
+    }else {
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            self.frame = [self originFrame];
+        } completion:^(BOOL finished) {
+            self.tableView.frame = [self tabelViewOriginFrame];
+        }];
+        
+    }
+    
+}
+
 #pragma mark- collectionView dataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;{
+    
+    if (!self.dataSource) {
+        return 0;
+    }
+    
     return [self.dataSource theColumnTitlesArrayWithMenu:self].count;
+    
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;{
-    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionViewCell" forIndexPath:indexPath];
+    
+    ColumnCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ColumnCell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width -10, cell.contentView.bounds.size.height)];
-    label.font = self.columnTextFont;
-    label.textAlignment = NSTextAlignmentCenter;
+    
+    if (!cell.titleLabel) {
+        
+        cell.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width - 15, cell.contentView.bounds.size.height)];
+        [cell.contentView addSubview:cell.titleLabel];
+        cell.titleLabel.textAlignment = NSTextAlignmentCenter;
+        cell.titleLabel.font = self.columnTextFont;
+
+    }
+    
+    if (!cell.imageView) {
+        
+        cell.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(cell.contentView.bounds.size.width- 13, 0, 10, cell.contentView.bounds.size.height)];
+        cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [cell.contentView addSubview:cell.imageView];
+        
+    }
+    
     NSArray * titles = [self.dataSource theColumnTitlesArrayWithMenu:self];
-    label.text = titles[indexPath.item];
-    label.textColor = [UIColor blackColor];
-    label.tag = 100;
-    [cell.contentView addSubview:label];
-    UIImageView * imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic_unselected"]];
-    imgView.frame = CGRectMake(cell.contentView.bounds.size.width - 10, cell.contentView.bounds.size.height / 2 - 2, 7, 4);
-    imgView.tag = 101;
-    [cell.contentView addSubview:imgView];
+    cell.titleLabel.text = titles[indexPath.item];
     
     if (indexPath.item == _selectedColumn) {
-        label.textColor = self.selectedColor;
-        imgView.image = [UIImage imageNamed:@"pic_selected"];
+        
+        cell.titleLabel.textColor = self.selectedColor;
+        cell.imageView.image = _isDropDown ? self.selectDownImage : self.selectUpImage;
+        
+    }else {
+        
+        cell.titleLabel.textColor = self.unSelectedColor;
+        cell.imageView.image = self.unSelectImage;
+        
     }
+    
     return cell;
 }
 #pragma mark- collectionView delegate
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;{
-    CGFloat menuHeight = self.bounds.size.height;
-    return CGSizeMake(self.columnWidth, menuHeight);
-}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (_selectedColumn == indexPath.item) {
-        if (self.frame.size.height > _originHeight) {
-            
-            UIImageView * imgView = [[collectionView cellForItemAtIndexPath:indexPath] viewWithTag:101];
-            [UIView animateWithDuration:.35 animations:^{
-                self.tableView.frame = [self tabelViewOriginFrame];
-                imgView.image = [UIImage imageNamed:@"pic_selected"];
-            }];
-            self.frame = [self originFrame];
-            return;
-        }
-    }
-    _selectedColumn = indexPath.item;
-    NSInteger count = [self.dataSource theColumnTitlesArrayWithMenu:self].count;
-    for (NSInteger i = 0; i < count; i++) {
-        UICollectionViewCell * cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-        UILabel * label = [cell viewWithTag:100];
-        UIImageView * imgViwe = [cell viewWithTag:101];
-        if (indexPath.row == i) {
-            label.textColor = self.selectedColor;
-            imgViwe.image = [UIImage imageNamed:@"pic_up"];
-        }else{
-            label.textColor = [UIColor blackColor];
-            imgViwe.image = [UIImage imageNamed:@"pic_unselected"];
-        }
-    }
     
-    self.frame = [self dropDowmFrame];
-    [UIView animateWithDuration:.35 animations:^{
-        self.tableView.frame = [self tabelViewFrame];
-        [self.tableView reloadData];
-    }];
+    if (_selectedColumn == indexPath.item) {
+        _isDropDown = !_isDropDown;
+    }else {
+        _isDropDown = true;
+        _selectedColumn = indexPath.item;
+    }
+    [self.collectionView reloadData];
+    
+    [self changeDropStaue];
     
 }
 
 #pragma mark- tableView dataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;{
+    
+    if (!self.dataSource) {
+        return 0;
+    }
     return [self.dataSource theRowTitlesArrayWithColumn:_selectedColumn].count;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;{
+    
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"TableViewCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.tintColor = self.selectedColor;
@@ -209,7 +300,7 @@
     NSArray * titles = [self.dataSource theRowTitlesArrayWithColumn:_selectedColumn];
     cell.textLabel.text = titles[indexPath.row];
     cell.textLabel.font = self.rowTextFont;
-    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.textColor = self.unSelectedColor;
     if (indexPath.row == [self.selectedRows[_selectedColumn] integerValue]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.textLabel.textColor = self.selectedColor;
@@ -221,52 +312,31 @@
     return self.rowHeight;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     [_selectedRows setObject:[NSNumber numberWithInteger:indexPath.row] atIndexedSubscript:_selectedColumn];
-    //[tableView reloadData];
-    NSInteger count = [self.dataSource theRowTitlesArrayWithColumn:_selectedColumn].count;
-    for (NSInteger i = 0; i < count; i++) {
-        NSIndexPath * index = [NSIndexPath indexPathForRow:i inSection:0];
-        UITableViewCell * tablecell = [tableView cellForRowAtIndexPath:index];
-        if ([index isEqual:indexPath]) {
-            tablecell.accessoryType = UITableViewCellAccessoryCheckmark;
-        }else{
-            tablecell.accessoryType = UITableViewCellAccessoryNone;
-        }
-        
+    [tableView reloadData];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(menu:didSelectColumn:andRow:)]) {
+        [self.delegate menu:self didSelectColumn:_selectedColumn andRow:indexPath.row];
     }
     
-    UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedColumn inSection:0]];
-    UIImageView * imgView = [cell viewWithTag:101];
-    [self.delegate menu:self didSelectColumn:_selectedColumn andRow:[self.selectedRows[_selectedColumn] integerValue]];
-    UILabel * label = [cell viewWithTag:100];
-    NSArray * arr = [self.dataSource theRowTitlesArrayWithColumn:_selectedColumn];
-    label.text = arr[indexPath.row];
+    _isDropDown = false;
+    [self changeDropStaue];
     
-    [UIView animateWithDuration:.35 animations:^{
-        self.tableView.frame = [self tabelViewOriginFrame];
-        imgView.image = [UIImage imageNamed:@"pic_selected"];
-    }];
-    self.frame = [self originFrame];
 }
 
 #pragma mark- reload
 - (void) reload{
     _selectedColumn = 0;
-    _selectedRows = [NSMutableArray array];
-    //[self.collectionView reloadData];
-    //[self.tableView reloadData];
+    _selectedRows = nil;
+    [self.collectionView reloadData];
 }
 
 #pragma mark- 回收手势
 - (void) tapAction:(UITapGestureRecognizer *)tap{
     
-    UICollectionViewCell * cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedColumn inSection:0]];
-    UIImageView * imgView = [cell viewWithTag:101];
-    [UIView animateWithDuration:.35 animations:^{
-        self.tableView.frame = [self tabelViewOriginFrame];
-        imgView.image = [UIImage imageNamed:@"pic_selected"];
-    }];
-    self.frame = [self originFrame];
+    _isDropDown = false;
+    [self changeDropStaue];
     
 }
 

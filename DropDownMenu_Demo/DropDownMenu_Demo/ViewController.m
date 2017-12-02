@@ -26,7 +26,7 @@
     menu.delegate = self;
     menu.dataSource = self;
     [self.view addSubview:menu];
-    
+    [menu reload];
     
     
 }

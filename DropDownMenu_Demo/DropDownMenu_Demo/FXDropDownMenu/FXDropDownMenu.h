@@ -26,15 +26,11 @@
 #pragma mark- Delegate
 @protocol FXDropDownMenuDelegate <NSObject>
 
-@required
-
+@optional
 //选中二级菜单之后的操作
 - (void)menu:(FXDropDownMenu *)menu didSelectColumn:(NSInteger) column andRow:(NSInteger) row;
 
 @end
-
-
-
 
 @interface FXDropDownMenu : UIView
 
@@ -45,6 +41,10 @@
 @property (strong, nonatomic) UIFont * rowTextFont;
 @property (strong, nonatomic) UIFont * columnTextFont;
 @property (strong, nonatomic) UIColor * selectedColor;
+@property (strong, nonatomic) UIColor * unSelectedColor;
+@property (strong, nonatomic) UIImage * selectUpImage;
+@property (strong, nonatomic) UIImage * selectDownImage;
+@property (strong, nonatomic) UIImage * unSelectImage;
 
 - (void) reload;
 

@@ -20,14 +20,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _columns = @[@"你好", @"你好", @"你好", @"你好", @"你好"];
-    _rows = @[@"好的", @"好的", @"好的", @"好的", @"好的"];
-    FXDropDownMenu * menu = [[FXDropDownMenu alloc] init];
+    _columns = @[@"时间", @"好评度", @"人气", @"销量", @"库存", @"距离", @"星级"];
+    _rows = @[@"选项1", @"选项2", @"选项3", @"选项4", @"选项5", @"选项6", @"选项7", @"选项8"];
+    FXDropDownMenu * menu = [[FXDropDownMenu alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 50)];
+    menu.selectedColor = [UIColor colorWithRed:34.0/255 green:208.0/255 blue:177.0/255 alpha:1];
+    menu.unSelectedColor = [UIColor blackColor];
+    menu.columnWidth = 100;
+    menu.rowHeight = 44;
+    menu.columnTextFont = [UIFont systemFontOfSize:16];
+    menu.rowTextFont = [UIFont systemFontOfSize:14];
     menu.delegate = self;
     menu.dataSource = self;
-    [self.view addSubview:menu];
-    [menu reload];
-    
+    [menu showWithView:self.view];
     
 }
 

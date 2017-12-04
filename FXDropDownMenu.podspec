@@ -106,7 +106,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "FXDropDownMenu/FXDropDownMenu.bundle/*.png"
+  s.resources = "FXDropDownMenu/*.bundle"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 

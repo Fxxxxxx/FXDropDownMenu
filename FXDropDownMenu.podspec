@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FXDropDownMenu"
-  s.version      = "1.0"
+  s.version      = "1.0.1"
   s.summary      = "简单好用的下拉点击菜单"
 
   # This description is used to generate tags and improve search results.

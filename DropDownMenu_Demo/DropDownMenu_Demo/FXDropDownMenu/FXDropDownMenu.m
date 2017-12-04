@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UICollectionView * collectionView;
 @property (strong, nonatomic) UITableView * tableView;
 @property (strong, nonatomic) NSMutableArray * selectedRows;
+@property (strong, nonatomic) NSBundle * imageBundle;
 
 @end
 
@@ -45,6 +46,19 @@
     // Drawing code
 }
 #pragma mark- 数据懒加载
+
+- (NSBundle *)imageBundle {
+    
+    if (!_imageBundle) {
+        
+        NSString * path = [[NSBundle bundleForClass:[FXDropDownMenu class]] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
+        _imageBundle = [NSBundle bundleWithPath:path];
+        
+    }
+    return _imageBundle;
+    
+}
+
 - (CGFloat) rowHeight{
     if (!_rowHeight) {
         _rowHeight = 40;
@@ -92,8 +106,7 @@
 - (UIImage *)selectUpImage {
     
     if (!_selectUpImage) {
-        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
-        _selectUpImage = [UIImage imageNamed:@"pic_up" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
+        _selectUpImage = [UIImage imageNamed:@"pic_up" inBundle:self.imageBundle compatibleWithTraitCollection:nil];
     }
     return _selectUpImage;
     
@@ -102,8 +115,7 @@
 - (UIImage *)selectDownImage {
     
     if (!_selectDownImage) {
-        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
-        _selectDownImage = [UIImage imageNamed:@"pic_selected" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
+        _selectDownImage = [UIImage imageNamed:@"pic_selected" inBundle:self.imageBundle compatibleWithTraitCollection:nil];
     }
     return _selectDownImage;
     
@@ -112,8 +124,7 @@
 - (UIImage *)unSelectImage {
     
     if (!_unSelectImage) {
-        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
-        _unSelectImage = [UIImage imageNamed:@"pic_unselected" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
+        _unSelectImage = [UIImage imageNamed:@"pic_unselected" inBundle:self.imageBundle compatibleWithTraitCollection:nil];
     }
     return _unSelectImage;
     
@@ -124,7 +135,7 @@
     if (_selectedRows.count == 0) {
         
         _selectedRows = [NSMutableArray array];
-
+        
         if (!self.dataSource) {
             return _selectedRows;
         }
@@ -244,7 +255,7 @@
         [cell.contentView addSubview:cell.titleLabel];
         cell.titleLabel.textAlignment = NSTextAlignmentCenter;
         cell.titleLabel.font = self.columnTextFont;
-
+        
     }
     
     if (!cell.imageView) {
@@ -357,3 +368,5 @@
 }
 
 @end
+
+

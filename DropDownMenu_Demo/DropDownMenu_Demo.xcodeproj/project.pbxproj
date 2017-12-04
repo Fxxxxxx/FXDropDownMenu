@@ -14,9 +14,7 @@
 		3017A5691DCD696400DE264D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3017A5681DCD696400DE264D /* Assets.xcassets */; };
 		3017A56C1DCD696400DE264D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3017A56A1DCD696400DE264D /* LaunchScreen.storyboard */; };
 		3017A5841DCE11E300DE264D /* FXDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3017A5831DCE11E300DE264D /* FXDropDownMenu.m */; };
-		30D0877F1E0A266000C27ACA /* pic_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 30D0877C1E0A266000C27ACA /* pic_selected.png */; };
-		30D087801E0A266000C27ACA /* pic_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 30D0877D1E0A266000C27ACA /* pic_unselected.png */; };
-		30D087811E0A266000C27ACA /* pic_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 30D0877E1E0A266000C27ACA /* pic_up.png */; };
+		3022951A1FD4DDAC00733FB1 /* FXDropDownMenu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 302295191FD4DDAC00733FB1 /* FXDropDownMenu.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +30,7 @@
 		3017A56D1DCD696400DE264D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3017A5821DCE11E300DE264D /* FXDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXDropDownMenu.h; sourceTree = "<group>"; };
 		3017A5831DCE11E300DE264D /* FXDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXDropDownMenu.m; sourceTree = "<group>"; };
-		30D0877C1E0A266000C27ACA /* pic_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic_selected.png; sourceTree = "<group>"; };
-		30D0877D1E0A266000C27ACA /* pic_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic_unselected.png; sourceTree = "<group>"; };
-		30D0877E1E0A266000C27ACA /* pic_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic_up.png; sourceTree = "<group>"; };
+		302295191FD4DDAC00733FB1 /* FXDropDownMenu.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FXDropDownMenu.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,11 +88,9 @@
 		3017A5811DCE11E300DE264D /* FXDropDownMenu */ = {
 			isa = PBXGroup;
 			children = (
-				30D0877C1E0A266000C27ACA /* pic_selected.png */,
-				30D0877D1E0A266000C27ACA /* pic_unselected.png */,
-				30D0877E1E0A266000C27ACA /* pic_up.png */,
 				3017A5821DCE11E300DE264D /* FXDropDownMenu.h */,
 				3017A5831DCE11E300DE264D /* FXDropDownMenu.m */,
+				302295191FD4DDAC00733FB1 /* FXDropDownMenu.bundle */,
 			);
 			path = FXDropDownMenu;
 			sourceTree = "<group>";
@@ -160,12 +154,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3022951A1FD4DDAC00733FB1 /* FXDropDownMenu.bundle in Resources */,
 				3017A56C1DCD696400DE264D /* LaunchScreen.storyboard in Resources */,
 				3017A5691DCD696400DE264D /* Assets.xcassets in Resources */,
 				3017A5671DCD696400DE264D /* Main.storyboard in Resources */,
-				30D087811E0A266000C27ACA /* pic_up.png in Resources */,
-				30D0877F1E0A266000C27ACA /* pic_selected.png in Resources */,
-				30D087801E0A266000C27ACA /* pic_unselected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

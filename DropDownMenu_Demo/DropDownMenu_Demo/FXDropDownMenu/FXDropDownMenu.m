@@ -92,7 +92,8 @@
 - (UIImage *)selectUpImage {
     
     if (!_selectUpImage) {
-        _selectUpImage = [UIImage imageNamed:@"pic_up"];
+        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
+        _selectUpImage = [UIImage imageNamed:@"pic_up" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
     }
     return _selectUpImage;
     
@@ -101,7 +102,8 @@
 - (UIImage *)selectDownImage {
     
     if (!_selectDownImage) {
-        _selectDownImage = [UIImage imageNamed:@"pic_selected"];
+        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
+        _selectDownImage = [UIImage imageNamed:@"pic_selected" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
     }
     return _selectDownImage;
     
@@ -110,7 +112,8 @@
 - (UIImage *)unSelectImage {
     
     if (!_unSelectImage) {
-        _unSelectImage = [UIImage imageNamed:@"pic_unselected"];
+        NSString * path = [[NSBundle mainBundle] pathForResource:@"FXDropDownMenu" ofType:@"bundle"];
+        _unSelectImage = [UIImage imageNamed:@"pic_unselected" inBundle:[NSBundle bundleWithPath:path] compatibleWithTraitCollection:nil];
     }
     return _unSelectImage;
     
